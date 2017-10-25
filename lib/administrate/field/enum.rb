@@ -8,6 +8,14 @@ module Administrate
         data.humanize unless data.nil?
       end
 
+      def include_blank
+        options.fetch(:include_blank, false)
+      end
+
+      def as_radio
+        options.fetch(:as_radio, false)
+      end
+
       class Engine < ::Rails::Engine
       end
     end

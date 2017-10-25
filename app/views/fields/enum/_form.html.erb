@@ -18,11 +18,21 @@ By default, the input is a select field for the enum attributes.
   <%= f.label field.attribute %>
 </div>
 <div class="field-unit__field">
-  <%= f.select(
-  field.attribute,
-  options_for_select(
-  f.object.class.public_send(field.attribute.to_s.pluralize)
-  .map { |k, v| [k.humanize, k] },
-  f.object.public_send(field.attribute.to_s)),
-  include_blank: false) %>
+  <% if field.as_radio %>
+    <% f.object.class.public_send(field.attribute.to_s.pluralize).each do |option, _| %>
+      <div class="radio-option">
+        <%= f.radio_button field.attribute, option %>
+        <%= f.label "#{field.attribute.to_s}_#{option}", option.humanize %>
+      </div>
+    <% end %>
+  <% else %>
+    <%= f.select(
+      field.attribute,
+      options_for_select(
+      f.object.class.public_send(field.attribute.to_s.pluralize)
+      .map { |k, v| [k.humanize, k] },
+      f.object.public_send(field.attribute.to_s)),
+      include_blank: field.include_blank) %>
+  <% end %>
+
 </div>
